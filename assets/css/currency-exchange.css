@@ -1,0 +1,149 @@
+/* Custom styles for currency exchange app */
+.currency-exchange {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding:0 0 2rem 0;
+}
+
+.currency-exchange .header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.currency-header {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.currency-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
+    margin-bottom: 2rem;
+}
+
+.currency-card:hover {
+    transform: translateY(-5px);
+}
+
+.currency-card .card-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 1.5rem;
+}
+
+.currency-table {
+    margin: 0;
+}
+
+.currency-table th {
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.currency-table td {
+    vertical-align: middle;
+    padding: 1rem;
+}
+
+.currency-code {
+    font-weight: 600;
+    color: #2a5298;
+}
+
+.currency-name {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.rate-value {
+    font-family: "Roboto Mono", monospace;
+    font-weight: 500;
+}
+
+.buying-rate {
+    color: #28a745;
+}
+
+.selling-rate {
+    color: #dc3545;
+}
+
+.na-rate {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.date-picker-container {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+}
+
+.date-picker-container input {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    width: 200px;
+}
+
+.historical-rates-section {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.currency-section-title {
+    color: #495057;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.loading-spinner .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .currency-header {
+        font-size: 2rem;
+    }
+
+    .currency-card {
+        margin: 1rem;
+    }
+
+    .currency-table {
+        font-size: 0.9rem;
+    }
+}

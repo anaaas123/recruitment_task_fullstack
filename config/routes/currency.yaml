@@ -1,0 +1,9 @@
+api_current_rates:
+    path: /api/rates/current
+    controller: App\Controller\CurrencyController::getCurrentRates
+    methods: GET
+
+api_historical_rates:
+    path: /api/rates/historical
+    controller: App\Controller\CurrencyController::getHistoricalRates
+    methods: GET
