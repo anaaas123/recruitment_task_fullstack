@@ -12,7 +12,7 @@ class CurrencyService
 {
     private const SUPPORTED_CURRENCIES = ['EUR', 'USD', 'CZK', 'IDR', 'BRL'];
     private const NBP_API_BASE_URL = 'https://api.nbp.pl/api';
-    private const CACHE_TTL = 3600; // 1 hour cache
+    private const CACHE_TTL = 3600; 
 
     public function __construct(
         private HttpClientInterface $httpClient,
@@ -23,13 +23,19 @@ class CurrencyService
     {
         return $this->cache->get('current_rates', function (ItemInterface $item) {
             $item->expiresAfter(self::CACHE_TTL);
-            
+
             $response = $this->httpClient->request(
                 'GET',
                 self::NBP_API_BASE_URL . '/exchangerates/tables/A/?format=json'
             );
 
-            $data = json_decode($response->getContent(), true)[0];
+            $dataArray = json_decode($response->getContent(), true);
+            
+            if (!is_array($dataArray) || !isset($dataArray[0]['rates'])) {
+                return [];
+            }
+
+            $data = $dataArray[0];
             return $this->transformRates($data['rates']);
         });
     }
@@ -37,14 +43,13 @@ class CurrencyService
     public function getHistoricalRates(string $date): array
     {
         $cacheKey = 'historical_rates_' . $date;
-        
+
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($date) {
             $item->expiresAfter(self::CACHE_TTL);
-            
-            // Calculate date range (14 days before the selected date)
+
             $endDate = new \DateTime($date);
             $startDate = (clone $endDate)->modify('-14 days');
-            
+
             $rates = [];
             foreach (self::SUPPORTED_CURRENCIES as $currency) {
                 $response = $this->httpClient->request(
@@ -57,11 +62,16 @@ class CurrencyService
                         $endDate->format('Y-m-d')
                     )
                 );
-                
+
                 $data = json_decode($response->getContent(), true);
-                $rates[$currency] = $this->transformHistoricalRates($data['rates'], $currency);
+
+                if (!is_array($data) || !isset($data['rates'])) {
+                    $rates[$currency] = [];
+                } else {
+                    $rates[$currency] = $this->transformHistoricalRates($data['rates'], $currency);
+                }
             }
-            
+
             return $rates;
         });
     }
@@ -69,12 +79,12 @@ class CurrencyService
     private function transformRates(array $rates): array
     {
         $transformedRates = [];
-        
+
         foreach ($rates as $rate) {
             if (!in_array($rate['code'], self::SUPPORTED_CURRENCIES)) {
                 continue;
             }
-            
+
             $avgRate = $rate['mid'];
             $transformedRates[$rate['code']] = [
                 'code' => $rate['code'],
@@ -84,7 +94,7 @@ class CurrencyService
                 'sellingRate' => $this->calculateSellingRate($rate['code'], $avgRate)
             ];
         }
-        
+
         return $transformedRates;
     }
 
@@ -106,7 +116,7 @@ class CurrencyService
         if (in_array($currency, ['EUR', 'USD'])) {
             return round($averageRate - 0.15, 4);
         }
-        
+
         return null; // Other currencies are not bought
     }
 
@@ -115,7 +125,7 @@ class CurrencyService
         if (in_array($currency, ['EUR', 'USD'])) {
             return round($averageRate + 0.11, 4);
         }
-        
+
         return round($averageRate + 0.20, 4);
     }
 }
