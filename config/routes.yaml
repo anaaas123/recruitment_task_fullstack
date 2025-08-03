@@ -1,12 +1,10 @@
-#home:
-#  path: /
-#  defaults: { _controller: 'AppBundle\Controller\DefaultController::indexAction' }
-#  methods:  GET
-#
-
 setupcheck:
     path: /api/setup-check
     controller: App\Controller\DefaultController::setupCheck
+
+# Import currency routes
+currency_routes:
+    resource: 'routes/currency.yaml'
 
 index:
     path: /{wildcard}

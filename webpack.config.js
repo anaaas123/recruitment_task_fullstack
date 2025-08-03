@@ -46,8 +46,14 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
-    // configure Babel
-    // .configureBabel((config) => {
+    // Enable React support
+    .enableReactPreset()
+
+    // Basic configuration for CSS
+    .configureBabel((babelConfig) => {}, {
+        useBuiltIns: 'usage',
+        corejs: 3
+    })
     //     config.plugins.push('@babel/a-babel-plugin');
     // })
 
